@@ -5,7 +5,7 @@
 
 #include "Camera.h"
 
-class TitleScene : public BaseScene
+class ClearScene : public BaseScene
 {
 public:
 
@@ -22,3 +22,4 @@ private:
 	std::unique_ptr<Camera> camera_ = nullptr;
 
 };
+

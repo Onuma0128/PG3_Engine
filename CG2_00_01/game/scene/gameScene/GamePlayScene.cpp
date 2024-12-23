@@ -13,7 +13,11 @@
 
 void GamePlayScene::Initialize()
 {
-	// カメラの初期化
+	// Cameraの初期化
+	// ===============
+	// Cameraのポインタを初期化
+	// CameraManagerに登録
+	// ===============
 	camera_ = std::make_unique<Camera>();
 	camera_->Initialize();
 	CameraManager::GetInstance()->SetCamera(camera_.get());
@@ -39,14 +43,14 @@ void GamePlayScene::Finalize()
 
 void GamePlayScene::Update()
 {
-	if (Input::GetInstance()->PushKey(DIK_RETURN)) {
-		SceneManager::GetInstance()->ChangeScene("Title");
-	}
-
 	transform_->rotation_.y += 0.01f;
 
 	teapot_->Update();
 	model_->Update();
+
+
+	// ゲームクリアで状態遷移
+	//SceneManager::GetInstance()->ChangeScene("Clear");
 }
 
 void GamePlayScene::Draw()
