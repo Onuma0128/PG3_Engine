@@ -4,6 +4,7 @@
 #include "BaseScene.h"
 
 #include "Camera.h"
+#include "Sprite.h"
 
 class ClearScene : public BaseScene
 {
@@ -20,6 +21,8 @@ public:
 private:
 
 	std::unique_ptr<Camera> camera_ = nullptr;
+
+	std::unique_ptr<Sprite> sprite_ = nullptr;
 
 };
 

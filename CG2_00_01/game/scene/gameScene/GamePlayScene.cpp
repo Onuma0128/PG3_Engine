@@ -35,6 +35,16 @@ void GamePlayScene::Initialize()
 	teapot_->Initialize("teapot.obj", teapotTrans_.get());
 	teapotTrans_->parent_ = transform_.get();
 
+	player_ = std::make_unique<Player>();
+	player_->Init();
+
+	for (int i = 0; i < 3; ++i) {
+		std::unique_ptr<Enemy> enemy = std::make_unique<Enemy>();
+		enemy->Init({ 320.0f + i * 320.0f,64.0f });
+		enemys_.push_back(std::move(enemy));
+	}
+
+	collisionManager_ = std::make_unique<CollisionManager>();
 }
 
 void GamePlayScene::Finalize()
@@ -48,6 +58,13 @@ void GamePlayScene::Update()
 	teapot_->Update();
 	model_->Update();
 
+	player_->Update();
+
+	for (auto& enemy : enemys_) {
+		enemy->Update();
+	}
+
+	CheckAllCollisions();
 
 	// ゲームクリアで状態遷移
 	//SceneManager::GetInstance()->ChangeScene("Clear");
@@ -64,8 +81,11 @@ void GamePlayScene::Draw()
 	// Spriteの描画準備
 	SpriteBase::GetInstance()->DrawBase();
 	
+	player_->Draw();
 
-
+	for (auto& enemy : enemys_) {
+		enemy->Draw();
+	}
 
 	// Lineの描画準備
 	PrimitiveDrawer::GetInstance()->DrawBase();
@@ -75,4 +95,22 @@ void GamePlayScene::Draw()
 
 	// Particleの描画
 
+}
+
+void GamePlayScene::CheckAllCollisions()
+{
+	collisionManager_->Reset();
+
+	for (auto& bullet : player_->GetBullets()) {
+		if (bullet->GetIsActive()) {
+			collisionManager_->AddCollider(bullet.get());
+		}
+	}
+	for (auto& enemy : enemys_) {
+		if (enemy->GetIsActive()) {
+			collisionManager_->AddCollider(enemy.get());
+		}
+	}
+
+	collisionManager_->CheckAllCollisions();
 }

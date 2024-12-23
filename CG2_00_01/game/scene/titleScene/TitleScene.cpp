@@ -22,6 +22,11 @@ void TitleScene::Initialize()
 	camera_ = std::make_unique<Camera>();
 	camera_->Initialize();
 	CameraManager::GetInstance()->SetCamera(camera_.get());
+
+
+	sprite_ = std::make_unique<Sprite>();
+	sprite_->Initialize("Title.png");
+
 }
 
 void TitleScene::Finalize()
@@ -33,6 +38,8 @@ void TitleScene::Update()
 	if (Input::GetInstance()->TriggerKey(DIK_RETURN)) {
 		SceneManager::GetInstance()->ChangeScene("Game");
 	}
+
+	sprite_->Update();
 }
 
 void TitleScene::Draw()
@@ -46,7 +53,7 @@ void TitleScene::Draw()
 	// Spriteの描画準備
 	SpriteBase::GetInstance()->DrawBase();
 	
-
+	sprite_->Draw();
 
 
 	// Lineの描画準備

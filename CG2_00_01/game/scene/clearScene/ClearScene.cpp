@@ -19,6 +19,10 @@ void ClearScene::Initialize()
 	camera_ = std::make_unique<Camera>();
 	camera_->Initialize();
 	CameraManager::GetInstance()->SetCamera(camera_.get());
+
+
+	sprite_ = std::make_unique<Sprite>();
+	sprite_->Initialize("Clear.png");
 }
 
 void ClearScene::Finalize()
@@ -30,6 +34,8 @@ void ClearScene::Update()
  	if (Input::GetInstance()->TriggerKey(DIK_SPACE)) {
 		SceneManager::GetInstance()->ChangeScene("Title");
 	}
+
+	sprite_->Update();
 }
 
 void ClearScene::Draw()
@@ -43,7 +49,7 @@ void ClearScene::Draw()
 	// Spriteの描画準備
 	SpriteBase::GetInstance()->DrawBase();
 
-
+	sprite_->Draw();
 
 
 	// Lineの描画準備
